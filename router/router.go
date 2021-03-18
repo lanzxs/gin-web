@@ -6,12 +6,16 @@ import (
 )
 import "lan/gin-web/controller"
 
-func RouterInit(engine *gin.Engine)  {
+func RouterInit(engine *gin.Engine) {
 
+	//全局异常处理
+	engine.Use(middleware.RecoverException)
+	//初始化速率限制
+	engine.Use(middleware.RateLimiter())
 	//获取配置
-	engine.GET("/config",controller.GetConfig)
+	engine.GET("/config", controller.GetConfig)
 	//登录
-	engine.GET("/login",controller.Login)
+	engine.GET("/login", controller.Login)
 	//uuid
-	engine.GET("/uuid",middleware.JwtCheckMiddleware(),controller.GetUUID)
+	engine.GET("/uuid", middleware.JwtCheckMiddleware(), controller.GetUUID)
 }
